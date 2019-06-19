@@ -22,15 +22,42 @@ class AppState extends State<App> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(25),
+      padding: EdgeInsets.all(20),
       child: Column(
         children: <Widget>[
-          HomePageButton(
-            2,
-            color: Colors.amberAccent,
-            str: "Hello",
+          Flexible(
+            flex: 2,
+            fit: FlexFit.tight,
+            child: Container(
+              margin: EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                color: Colors.cyanAccent,
+                borderRadius: BorderRadius.circular(15),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black54,
+                    blurRadius: 10.0,
+                    offset: Offset(0, 10),
+                  ),
+                ],
+              ),
+              child: Center(
+                child: Text(
+                  "TitleCard",
+                  style: TextStyle(
+                    fontFamily: "Roboto",
+                    fontSize: 50,
+                  ),
+                ),
+              ),
+            ),
           ),
-          HomePageButton(1)
+          HomePageButton(
+            color: Colors.amberAccent,
+            string: "Hello",
+          ),
+          HomePageButton(),
+          HomePageButton(),
         ],
       ),
     );
@@ -38,19 +65,17 @@ class AppState extends State<App> {
 }
 
 class HomePageButton extends StatelessWidget {
-  final int flexNum;
   final Color color;
-  final String str;
-  HomePageButton(this.flexNum, {this.color: Colors.blueGrey, this.str: "BLANK"})
-      : assert(flexNum != null);
+  final String string;
+  HomePageButton({this.color: Colors.black, this.string: ""});
 
   @override
   Widget build(BuildContext context) {
     return Flexible(
-      flex: flexNum,
+      flex: 1,
       fit: FlexFit.tight,
       child: Container(
-        margin: EdgeInsets.all(7.5),
+        margin: EdgeInsets.all(20),
         decoration: BoxDecoration(
           color: color,
           borderRadius: BorderRadius.circular(15),
@@ -64,7 +89,7 @@ class HomePageButton extends StatelessWidget {
         ),
         child: Center(
           child: Text(
-            str,
+            string,
             style: TextStyle(
               fontFamily: "Georgia",
               fontSize: 50,
