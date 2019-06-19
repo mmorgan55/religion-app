@@ -64,6 +64,19 @@ class AppState extends State<App> {
   }
 }
 
+class SecondPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Container(
+        child: Center(
+          child: Text("blah"),
+        ),
+      ),
+    );
+  }
+}
+
 class HomePageButton extends StatelessWidget {
   final Color color;
   final String string;
@@ -74,25 +87,33 @@ class HomePageButton extends StatelessWidget {
     return Flexible(
       flex: 1,
       fit: FlexFit.tight,
-      child: Container(
-        margin: EdgeInsets.all(20),
-        decoration: BoxDecoration(
-          color: color,
-          borderRadius: BorderRadius.circular(15),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black54,
-              blurRadius: 10.0,
-              offset: Offset(0, 10),
-            ),
-          ],
-        ),
-        child: Center(
-          child: Text(
-            string,
-            style: TextStyle(
-              fontFamily: "Georgia",
-              fontSize: 50,
+      child: GestureDetector(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => SecondPage()),
+          );
+        },
+        child: Container(
+          margin: EdgeInsets.all(20),
+          decoration: BoxDecoration(
+            color: color,
+            borderRadius: BorderRadius.circular(15),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black54,
+                blurRadius: 10.0,
+                offset: Offset(0, 10),
+              ),
+            ],
+          ),
+          child: Center(
+            child: Text(
+              string,
+              style: TextStyle(
+                fontFamily: "Georgia",
+                fontSize: 50,
+              ),
             ),
           ),
         ),
