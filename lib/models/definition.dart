@@ -17,4 +17,16 @@ class Definition {
   set setDefinition(String newDefinition) {
     this.definition = newDefinition;
   }
+
+  Map<String, dynamic> toMap() {
+    var map = Map<String, dynamic>();
+    if (id != null) {
+      map['id'] = id;
+    }
+
+    map['word'] = word;
+    map['definition'] = definition;
+
+    return map;
+  }
 }
