@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_stetho/flutter_stetho.dart';
 
-void main() => runApp(LearnReligionApp());
+void main() {
+  Stetho.initialize();
+  runApp(LearnReligionApp());
+}
 
 class LearnReligionApp extends StatelessWidget {
   @override
