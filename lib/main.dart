@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_stetho/flutter_stetho.dart';
+import 'db.dart';
+import 'models/definition.dart';
 
 void main() {
   Stetho.initialize();
+  testDatabase();
   runApp(LearnReligionApp());
 }
 
@@ -124,4 +127,11 @@ class HomePageButton extends StatelessWidget {
       ),
     );
   }
+}
+
+void testDatabase() {
+  DatabaseHelper helper = DatabaseHelper();
+  helper.initializeDatabase();
+  Definition definition = Definition("test", "this is for testing");
+  helper.insertDefinition(definition);
 }

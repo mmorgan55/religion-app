@@ -1,6 +1,6 @@
 import 'package:sqflite/sqflite.dart';
 import 'dart:async';
-import 'dart:io';
+import 'dart:io' as io;
 import 'package:path_provider/path_provider.dart';
 import 'models/definition.dart';
 
@@ -32,7 +32,7 @@ class DatabaseHelper {
   }
 
   Future<Database> initializeDatabase() async {
-    Directory directory = await getApplicationDocumentsDirectory();
+    io.Directory directory = await getApplicationDocumentsDirectory();
     String path = directory.path + "defintion.db";
     var definitionsDatabase =
         openDatabase(path, version: 1, onCreate: createDatabase);
@@ -47,7 +47,7 @@ class DatabaseHelper {
   //CRUD Operations
 
   //FETCH
-  Future<List<Map<String, dynamic>>> getDefintionMapList() async {
+  Future<List<Map<String, dynamic>>> getDefinitionMapList() async {
     Database db = await this.getDatabase;
 
     var result = await db.query(definitionTable, orderBy: 'colWord DESC');
@@ -87,5 +87,18 @@ class DatabaseHelper {
     int result = Sqflite.firstIntValue(num);
 
     return result;
+  }
+
+  Future<List<Definition>> getDefinitionList() async {
+    var definitionMapList = await getDefinitionMapList();
+    int count = definitionMapList.length;
+
+    List<Definition> definitionList = List<Definition>();
+
+    for (int i = 0; i < count; i++) {
+      definitionList.add(Definition.fromMapObject(definitionMapList[i]));
+    }
+
+    return definitionList;
   }
 }

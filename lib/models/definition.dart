@@ -29,4 +29,10 @@ class Definition {
 
     return map;
   }
+
+  Definition.fromMapObject(Map<String, dynamic> map) {
+    this.id = map['id'];
+    this.word = map['word'];
+    this.word = map['definition'];
+  }
 }
