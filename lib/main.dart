@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_stetho/flutter_stetho.dart';
+import 'package:sqflite/sqlite_api.dart';
 import 'db.dart';
 import 'models/definition.dart';
 
@@ -71,15 +72,44 @@ class AppState extends State<App> {
   }
 }
 
-class SecondPage extends StatelessWidget {
+class SecondPage extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    return SecondPageState();
+  }
+}
+
+class SecondPageState extends State<SecondPage> {
+  DatabaseHelper helper = DatabaseHelper();
+  List<Definition> definitions;
+  int count = 0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        child: Center(
-          child: Text("blah"),
-        ),
-      ),
+      body: getListView(),
+    );
+  }
+
+  ListView getListView() {
+    final Future<Database> dbFuture = helper.initializeDatabase();
+    dbFuture.then((database) {
+      Future<List<Definition>> definitionListFuture =
+          helper.getDefinitionList();
+
+      definitionListFuture.then((definitionList) {
+        setState(() {
+          this.definitions = definitionList;
+          this.count = definitionList.length;
+        });
+      });
+    });
+
+    return ListView.builder(
+      itemCount: count,
+      itemBuilder: (BuildContext context, int position) {
+        return Text(this.definitions[position].definition);
+      },
     );
   }
 }

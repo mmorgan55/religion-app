@@ -33,6 +33,6 @@ class Definition {
   Definition.fromMapObject(Map<String, dynamic> map) {
     this.id = map['id'];
     this.word = map['word'];
-    this.word = map['definition'];
+    this.definition = map['definition'];
   }
 }

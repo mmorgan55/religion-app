@@ -8,7 +8,7 @@ class DatabaseHelper {
   static DatabaseHelper databaseHelper;
   static Database database;
 
-  String definitionTable = "defintion_table";
+  String definitionTable = "definition_table";
   String colId = "id";
   String colWord = "word";
   String colDefinition = "definition";
@@ -33,9 +33,9 @@ class DatabaseHelper {
 
   Future<Database> initializeDatabase() async {
     io.Directory directory = await getApplicationDocumentsDirectory();
-    String path = directory.path + "defintion.db";
+    String path = directory.path + "definition.db";
     var definitionsDatabase =
-        openDatabase(path, version: 1, onCreate: createDatabase);
+        openDatabase(path, version: 2, onCreate: createDatabase);
     return definitionsDatabase;
   }
 
@@ -50,7 +50,7 @@ class DatabaseHelper {
   Future<List<Map<String, dynamic>>> getDefinitionMapList() async {
     Database db = await this.getDatabase;
 
-    var result = await db.query(definitionTable, orderBy: 'colWord DESC');
+    var result = await db.query(definitionTable, orderBy: '$colWord DESC');
     return result;
   }
 
