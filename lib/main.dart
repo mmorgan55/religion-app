@@ -108,7 +108,7 @@ class SecondPageState extends State<SecondPage> {
     return ListView.builder(
       itemCount: count,
       itemBuilder: (BuildContext context, int position) {
-        return Text(this.definitions[position].definition);
+        return Text(this.definitions[position].word);
       },
     );
   }
