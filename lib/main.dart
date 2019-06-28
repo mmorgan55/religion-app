@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:sqflite/sqlite_api.dart';
 import 'db.dart';
 import 'models/definition.dart';
-import 'dart:io';
-import 'dart:async';
-import 'dart:convert';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 void main() {
-  testDatabase();
+  //testDatabase();
   runApp(LearnReligionApp());
 }
 
@@ -88,29 +85,41 @@ class SecondPageState extends State<SecondPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: getListView(),
+      body: StreamBuilder(
+        stream: Firestore.instance.collection('words').snapshots(),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) return const Text("Loading...");
+          return ListView.separated(
+            separatorBuilder: (context, index) => Divider(
+              color: Colors.grey,
+            ),
+            itemCount: snapshot.data.documents.length,
+            itemBuilder: (context, index) =>
+                buildListItem(context, snapshot.data.documents[index]),
+          );
+        },
+      ),
     );
   }
 
-  ListView getListView() {
-    final Future<Database> dbFuture = helper.initializeDatabase();
-    dbFuture.then((database) {
-      Future<List<Definition>> definitionListFuture =
-          helper.getDefinitionList();
-
-      definitionListFuture.then((definitionList) {
-        setState(() {
-          this.definitions = definitionList;
-          this.count = definitionList.length;
-        });
-      });
-    });
-
-    return ListView.builder(
-      itemCount: count,
-      itemBuilder: (BuildContext context, int position) {
-        return Text(this.definitions[position].word);
-      },
+  Widget buildListItem(BuildContext context, DocumentSnapshot document) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black54,
+            blurRadius: 10.0,
+            offset: Offset(0, 10),
+          ),
+        ],
+      ),
+      child: ExpansionTile(
+        title: Text(document['word']),
+        children: <Widget>[
+          Text(document['definition'])
+        ],
+      ),
     );
   }
 }
@@ -158,20 +167,4 @@ class HomePageButton extends StatelessWidget {
       ),
     );
   }
-}
-
-void testDatabase() async {
-  final file = File("~\\lib\\data.csv");
-
-  Stream<List> inputStream = file.openRead();
-
-  inputStream.transform(utf8.decoder).transform(LineSplitter()).listen(
-      (String line) {
-    List row = line.split(",");
-
-    String word = row[0];
-    String definition = row[1];
-
-    print("$word, $definition");
-  }, onDone: () => print("closed"), onError: (e) => print(e.toString()));
 }
